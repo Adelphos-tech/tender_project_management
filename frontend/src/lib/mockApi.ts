@@ -175,12 +175,58 @@ export const mockContractorBills = {
 export const mockDashboard = {
   getStats: async () => {
     return {
-      totalVehicles: 15,
-      totalDrivers: 12,
-      activeTrips: 8,
-      pendingInquiries: 5,
-      monthlyRevenue: 450000,
-      expenses: 180000,
+      stats: {
+        totalVehicles: 15,
+        totalDrivers: 12,
+        activeVehicles: 10,
+        availableDrivers: 8,
+        activeTrips: 8,
+        completedTrips: 42,
+        pendingInquiries: 5,
+        totalExpense: 180000,
+      },
+      tripsByMonth: [
+        { _id: { month: 1, year: 2024 }, count: 12, distance: 1200 },
+        { _id: { month: 2, year: 2024 }, count: 15, distance: 1500 },
+        { _id: { month: 3, year: 2024 }, count: 10, distance: 1000 },
+        { _id: { month: 4, year: 2024 }, count: 18, distance: 1800 },
+        { _id: { month: 5, year: 2024 }, count: 14, distance: 1400 },
+      ],
+      expenseByType: [
+        { _id: 'fuel', total: 85000 },
+        { _id: 'maintenance', total: 45000 },
+        { _id: 'tolls', total: 25000 },
+        { _id: 'other', total: 25000 },
+      ],
+      recentTrips: [
+        {
+          _id: '1',
+          vehicle: { vehicleNumber: 'MH01 AB 1234' },
+          driver: { name: 'Ramesh Kumar' },
+          inquiry: { pickupLocation: 'Mumbai', dropLocation: 'Pune' },
+          status: 'completed',
+          totalDistance: 150,
+          totalExpense: 2500,
+        },
+        {
+          _id: '2',
+          vehicle: { vehicleNumber: 'MH02 CD 5678' },
+          driver: { name: 'Suresh Patil' },
+          inquiry: { pickupLocation: 'Delhi', dropLocation: 'Agra' },
+          status: 'ongoing',
+          totalDistance: 230,
+          totalExpense: 3800,
+        },
+        {
+          _id: '3',
+          vehicle: { vehicleNumber: 'MH03 EF 9012' },
+          driver: { name: 'Mahesh Singh' },
+          inquiry: { pickupLocation: 'Bangalore', dropLocation: 'Mysore' },
+          status: 'completed',
+          totalDistance: 145,
+          totalExpense: 2200,
+        },
+      ],
     };
   },
 };
