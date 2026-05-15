@@ -24,9 +24,9 @@ const AuthContext = createContext<AuthContextType>({
   userLevel: 0,
   login: async () => {},
   logout: () => {},
-  loading: true,
-  hasPermission: () => false,
-  canAccessModule: () => false,
+  loading: false,
+  hasPermission: () => true,
+  canAccessModule: () => true,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -136,13 +136,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(parsedUser);
         fetchPermissions(storedToken);
       } else {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        // Wireframe mode: set default mock user
+        const mockUser = {
+          _id: '1',
+          name: 'Admin User',
+          email: 'admin@example.com',
+          role: 'admin' as const,
+          isActive: true,
+          createdAt: new Date().toISOString(),
+        };
+        setUser(mockUser);
+        setPermissions(getDefaultPermissions('admin'));
       }
     } catch (err) {
       console.error('Failed to parse user from local storage:', err);
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      // Wireframe mode: set default mock user on error too
+      const mockUser = {
+        _id: '1',
+        name: 'Admin User',
+        email: 'admin@example.com',
+        role: 'admin' as const,
+        isActive: true,
+        createdAt: new Date().toISOString(),
+      };
+      setUser(mockUser);
+      setPermissions(getDefaultPermissions('admin'));
     } finally {
       setLoading(false);
     }

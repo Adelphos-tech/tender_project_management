@@ -25,7 +25,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (isLoginPage || !user) {
+  // Wireframe mode: always show sidebar except on login page
+  if (isLoginPage) {
     return <>{children}</>;
   }
 
