@@ -39,6 +39,8 @@ const mockLogs = [
     purpose: 'Gujarat Police Housing', fuelAmt: 450, serviceParticular: '', serviceAmt: 0,
     maintenanceParticular: '', maintenanceAmt: 0, tax: 0, remarks: '', approvedBy: 'Ketan Makadiya',
     approvalStatus: 'approved',
+    startOdometerImage: '', endOdometerImage: '', fuelBillUrl: '', serviceBillUrl: '',
+    maintenanceBillUrl: '', taxReceiptUrl: '',
   },
   {
     id: 'VLB-002', date: '2024-01-16', vehicle: 'Honda Activa', tourFrom: 'Rajkot', tourTo: 'Kalawad',
@@ -46,6 +48,8 @@ const mockLogs = [
     purpose: 'Kalawad Panchayat', fuelAmt: 250, serviceParticular: 'Oil change', serviceAmt: 350,
     maintenanceParticular: '', maintenanceAmt: 0, tax: 0, remarks: 'Chain lubrication done', approvedBy: 'Ketan Makadiya',
     approvalStatus: 'approved',
+    startOdometerImage: '', endOdometerImage: '', fuelBillUrl: '', serviceBillUrl: '',
+    maintenanceBillUrl: '', taxReceiptUrl: '',
   },
   {
     id: 'VLB-003', date: '2024-01-18', vehicle: 'Maruti Wagon R', tourFrom: 'Rajkot', tourTo: 'Jamnagar',
@@ -53,6 +57,8 @@ const mockLogs = [
     purpose: 'New Business', fuelAmt: 700, serviceParticular: '', serviceAmt: 0,
     maintenanceParticular: 'Tyre pressure', maintenanceAmt: 50, tax: 0, remarks: '', approvedBy: '',
     approvalStatus: 'pending',
+    startOdometerImage: '', endOdometerImage: '', fuelBillUrl: '', serviceBillUrl: '',
+    maintenanceBillUrl: '', taxReceiptUrl: '',
   },
   {
     id: 'VLB-004', date: '2024-01-20', vehicle: 'Bajaj Boxer', tourFrom: 'Rajkot', tourTo: 'Morbi',
@@ -60,6 +66,8 @@ const mockLogs = [
     purpose: 'Rajkot Municipal Corp', fuelAmt: 180, serviceParticular: '', serviceAmt: 0,
     maintenanceParticular: '', maintenanceAmt: 0, tax: 0, remarks: '', approvedBy: '',
     approvalStatus: 'pending',
+    startOdometerImage: '', endOdometerImage: '', fuelBillUrl: '', serviceBillUrl: '',
+    maintenanceBillUrl: '', taxReceiptUrl: '',
   },
 ];
 
@@ -73,6 +81,8 @@ const emptyForm = {
   date: '', vehicle: '', tourFrom: '', tourTo: '', startKm: '', endKm: '',
   person: '', purpose: '', fuelAmt: '', serviceParticular: '', serviceAmt: '',
   maintenanceParticular: '', maintenanceAmt: '', tax: '', remarks: '', approvedBy: '',
+  startOdometerImage: '', endOdometerImage: '', fuelBillUrl: '', serviceBillUrl: '',
+  maintenanceBillUrl: '', taxReceiptUrl: '',
 };
 
 export default function VehicleLogbookPage() {
@@ -109,6 +119,12 @@ export default function VehicleLogbookPage() {
         maintenanceParticular: form.maintenanceParticular, maintenanceAmt: Number(form.maintenanceAmt),
         tax: Number(form.tax), remarks: form.remarks, approvedBy: form.approvedBy,
         approvalStatus: form.approvedBy ? 'approved' : 'pending',
+        startOdometerImage: form.startOdometerImage,
+        endOdometerImage: form.endOdometerImage,
+        fuelBillUrl: form.fuelBillUrl,
+        serviceBillUrl: form.serviceBillUrl,
+        maintenanceBillUrl: form.maintenanceBillUrl,
+        taxReceiptUrl: form.taxReceiptUrl,
       } : l));
     } else {
       const newId = `VLB-${String(logs.length + 1).padStart(3, '0')}`;
@@ -119,19 +135,28 @@ export default function VehicleLogbookPage() {
         maintenanceParticular: form.maintenanceParticular, maintenanceAmt: Number(form.maintenanceAmt),
         tax: Number(form.tax), remarks: form.remarks, approvedBy: form.approvedBy,
         approvalStatus: form.approvedBy ? 'approved' : 'pending',
+        startOdometerImage: form.startOdometerImage,
+        endOdometerImage: form.endOdometerImage,
+        fuelBillUrl: form.fuelBillUrl,
+        serviceBillUrl: form.serviceBillUrl,
+        maintenanceBillUrl: form.maintenanceBillUrl,
+        taxReceiptUrl: form.taxReceiptUrl,
       }]);
     }
     setShowModal(false); setEditingId(null); setForm({ ...emptyForm });
   };
 
-  const openEdit = (l: typeof mockLogs[0]) => {
+  const openEdit = (l: any) => {
     setEditingId(l.id);
     setForm({
       date: l.date, vehicle: l.vehicle, tourFrom: l.tourFrom, tourTo: l.tourTo,
       startKm: String(l.startKm), endKm: String(l.endKm), person: l.person, purpose: l.purpose,
-      fuelAmt: String(l.fuelAmt), serviceParticular: l.serviceParticular, serviceAmt: String(l.serviceAmt),
-      maintenanceParticular: l.maintenanceParticular, maintenanceAmt: String(l.maintenanceAmt),
-      tax: String(l.tax), remarks: l.remarks, approvedBy: l.approvedBy,
+      fuelAmt: String(l.fuelAmt), serviceParticular: l.serviceParticular || '', serviceAmt: String(l.serviceAmt || 0),
+      maintenanceParticular: l.maintenanceParticular || '', maintenanceAmt: String(l.maintenanceAmt || 0),
+      tax: String(l.tax || 0), remarks: l.remarks || '', approvedBy: l.approvedBy || '',
+      startOdometerImage: l.startOdometerImage || '', endOdometerImage: l.endOdometerImage || '',
+      fuelBillUrl: l.fuelBillUrl || '', serviceBillUrl: l.serviceBillUrl || '',
+      maintenanceBillUrl: l.maintenanceBillUrl || '', taxReceiptUrl: l.taxReceiptUrl || '',
     });
     setShowModal(true);
   };
@@ -339,11 +364,57 @@ export default function VehicleLogbookPage() {
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Start KM *</label>
-                <input required type="number" value={form.startKm} onChange={e => setForm(f => ({ ...f, startKm: e.target.value }))} placeholder="Upload odometer photo" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                <input required type="number" value={form.startKm} onChange={e => setForm(f => ({ ...f, startKm: e.target.value }))} placeholder="Enter start odometer reading" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">End KM *</label>
-                <input required type="number" value={form.endKm} onChange={e => setForm(f => ({ ...f, endKm: e.target.value }))} placeholder="Upload odometer photo" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                <input required type="number" value={form.endKm} onChange={e => setForm(f => ({ ...f, endKm: e.target.value }))} placeholder="Enter end odometer reading" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+              </div>
+              {/* Start Odometer Photo Upload */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">Start Odometer Photo</label>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-3 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                  {form.startOdometerImage ? (
+                    <div className="relative">
+                      <img src={form.startOdometerImage} alt="Start odometer" className="h-16 mx-auto rounded" />
+                      <button
+                        type="button"
+                        onClick={() => setForm(f => ({ ...f, startOdometerImage: '' }))}
+                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-xs"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <HiOutlineUpload size={20} className="mx-auto text-slate-400 mb-1" />
+                      <p className="text-xs text-slate-500">Upload start odometer photo</p>
+                    </>
+                  )}
+                </div>
+              </div>
+              {/* End Odometer Photo Upload */}
+              <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">End Odometer Photo</label>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-3 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                  {form.endOdometerImage ? (
+                    <div className="relative">
+                      <img src={form.endOdometerImage} alt="End odometer" className="h-16 mx-auto rounded" />
+                      <button
+                        type="button"
+                        onClick={() => setForm(f => ({ ...f, endOdometerImage: '' }))}
+                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-xs"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <HiOutlineUpload size={20} className="mx-auto text-slate-400 mb-1" />
+                      <p className="text-xs text-slate-500">Upload end odometer photo</p>
+                    </>
+                  )}
+                </div>
               </div>
               {form.startKm && form.endKm && (
                 <div className="col-span-2 bg-cyan-50 border border-cyan-200 rounded-lg px-4 py-2 text-sm font-medium text-cyan-700">
@@ -369,24 +440,109 @@ export default function VehicleLogbookPage() {
                 <input type="number" value={form.fuelAmt} onChange={e => setForm(f => ({ ...f, fuelAmt: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
               </div>
               <div>
+                <label className="block text-xs font-semibold text-slate-600 mb-1">Fuel Bill Upload</label>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-3 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                  {form.fuelBillUrl ? (
+                    <div className="relative">
+                      <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                        <HiOutlineCheckCircle size={14} /> Bill Uploaded
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setForm(f => ({ ...f, fuelBillUrl: '' }))}
+                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-xs"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <HiOutlineUpload size={20} className="mx-auto text-slate-400 mb-1" />
+                      <p className="text-xs text-slate-500">Upload fuel bill</p>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Tax (₹)</label>
                 <input type="number" value={form.tax} onChange={e => setForm(f => ({ ...f, tax: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Service Particular</label>
-                <input type="text" value={form.serviceParticular} onChange={e => setForm(f => ({ ...f, serviceParticular: e.target.value }))} placeholder="e.g. Oil change" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                <label className="block text-xs font-semibold text-slate-600 mb-1">Tax Receipt Upload</label>
+                <div className="border-2 border-dashed border-slate-300 rounded-lg p-3 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                  {form.taxReceiptUrl ? (
+                    <div className="relative">
+                      <div className="text-xs text-green-600 flex items-center justify-center gap-1">
+                        <HiOutlineCheckCircle size={14} /> Receipt Uploaded
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setForm(f => ({ ...f, taxReceiptUrl: '' }))}
+                        className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-xs"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <HiOutlineUpload size={20} className="mx-auto text-slate-400 mb-1" />
+                      <p className="text-xs text-slate-500">Upload tax receipt</p>
+                    </>
+                  )}
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Service Amount (₹)</label>
-                <input type="number" value={form.serviceAmt} onChange={e => setForm(f => ({ ...f, serviceAmt: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+              <div className="col-span-2 grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">Service Particular</label>
+                  <input type="text" value={form.serviceParticular} onChange={e => setForm(f => ({ ...f, serviceParticular: e.target.value }))} placeholder="e.g. Oil change" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">Service Amount (₹)</label>
+                  <input type="number" value={form.serviceAmt} onChange={e => setForm(f => ({ ...f, serviceAmt: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">Service Bill</label>
+                  <div className="border-2 border-dashed border-slate-300 rounded-lg p-2 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                    {form.serviceBillUrl ? (
+                      <div className="relative">
+                        <div className="text-xs text-green-600"><HiOutlineCheckCircle size={14} className="inline" /> Uploaded</div>
+                        <button type="button" onClick={() => setForm(f => ({ ...f, serviceBillUrl: '' }))} className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-xs">×</button>
+                      </div>
+                    ) : (
+                      <>
+                        <HiOutlineUpload size={16} className="mx-auto text-slate-400" />
+                        <p className="text-xs text-slate-500">Upload</p>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Maintenance Particular</label>
-                <input type="text" value={form.maintenanceParticular} onChange={e => setForm(f => ({ ...f, maintenanceParticular: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Maintenance Amount (₹)</label>
-                <input type="number" value={form.maintenanceAmt} onChange={e => setForm(f => ({ ...f, maintenanceAmt: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+
+              <div className="col-span-2 grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">Maintenance Particular</label>
+                  <input type="text" value={form.maintenanceParticular} onChange={e => setForm(f => ({ ...f, maintenanceParticular: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">Maintenance Amount (₹)</label>
+                  <input type="number" value={form.maintenanceAmt} onChange={e => setForm(f => ({ ...f, maintenanceAmt: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1">Maintenance Bill</label>
+                  <div className="border-2 border-dashed border-slate-300 rounded-lg p-2 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
+                    {form.maintenanceBillUrl ? (
+                      <div className="relative">
+                        <div className="text-xs text-green-600"><HiOutlineCheckCircle size={14} className="inline" /> Uploaded</div>
+                        <button type="button" onClick={() => setForm(f => ({ ...f, maintenanceBillUrl: '' }))} className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full text-xs">×</button>
+                      </div>
+                    ) : (
+                      <>
+                        <HiOutlineUpload size={16} className="mx-auto text-slate-400" />
+                        <p className="text-xs text-slate-500">Upload</p>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Approved By</label>
@@ -395,16 +551,9 @@ export default function VehicleLogbookPage() {
                   {staffList.map(s => <option key={s}>{s}</option>)}
                 </select>
               </div>
-              <div>
+              <div className="col-span-2">
                 <label className="block text-xs font-semibold text-slate-600 mb-1">Remarks</label>
                 <input type="text" value={form.remarks} onChange={e => setForm(f => ({ ...f, remarks: e.target.value }))} className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-cyan-500 outline-none" />
-              </div>
-              <div className="col-span-2">
-                <label className="block text-xs font-semibold text-slate-600 mb-1">Upload Petrol Bill / Odometer Photo</label>
-                <div className="border-2 border-dashed border-slate-300 rounded-lg p-4 text-center cursor-pointer hover:border-cyan-400 hover:bg-cyan-50 transition-colors">
-                  <HiOutlineUpload size={20} className="mx-auto text-slate-400 mb-1" />
-                  <p className="text-xs text-slate-500">Upload bill receipts & odometer photos</p>
-                </div>
               </div>
               <div className="col-span-2 flex justify-end gap-3 pt-2 border-t border-slate-200">
                 <button type="button" onClick={() => { setShowModal(false); setEditingId(null); }} className="px-4 py-2 text-sm text-slate-600">Cancel</button>
@@ -450,6 +599,61 @@ export default function VehicleLogbookPage() {
                   <span className="text-slate-900 text-right max-w-[200px]">{v}</span>
                 </div>
               ))}
+
+              {/* Uploaded Documents Section */}
+              <div className="pt-4 border-t border-slate-200">
+                <h4 className="font-semibold text-slate-800 mb-3">Uploaded Documents</h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="border rounded-lg p-2 text-center">
+                    <p className="text-xs text-slate-500 mb-1">Start Odometer</p>
+                    {(viewLog as any).startOdometerImage ? (
+                      <img src={(viewLog as any).startOdometerImage} alt="Start" className="h-16 mx-auto rounded" />
+                    ) : (
+                      <span className="text-xs text-slate-400">Not uploaded</span>
+                    )}
+                  </div>
+                  <div className="border rounded-lg p-2 text-center">
+                    <p className="text-xs text-slate-500 mb-1">End Odometer</p>
+                    {(viewLog as any).endOdometerImage ? (
+                      <img src={(viewLog as any).endOdometerImage} alt="End" className="h-16 mx-auto rounded" />
+                    ) : (
+                      <span className="text-xs text-slate-400">Not uploaded</span>
+                    )}
+                  </div>
+                  <div className="border rounded-lg p-2 text-center">
+                    <p className="text-xs text-slate-500 mb-1">Fuel Bill</p>
+                    {(viewLog as any).fuelBillUrl ? (
+                      <a href={(viewLog as any).fuelBillUrl} target="_blank" rel="noopener" className="text-xs text-blue-600 hover:underline">View Bill</a>
+                    ) : (
+                      <span className="text-xs text-slate-400">Not uploaded</span>
+                    )}
+                  </div>
+                  <div className="border rounded-lg p-2 text-center">
+                    <p className="text-xs text-slate-500 mb-1">Service Bill</p>
+                    {(viewLog as any).serviceBillUrl ? (
+                      <a href={(viewLog as any).serviceBillUrl} target="_blank" rel="noopener" className="text-xs text-blue-600 hover:underline">View Bill</a>
+                    ) : (
+                      <span className="text-xs text-slate-400">Not uploaded</span>
+                    )}
+                  </div>
+                  <div className="border rounded-lg p-2 text-center">
+                    <p className="text-xs text-slate-500 mb-1">Maintenance Bill</p>
+                    {(viewLog as any).maintenanceBillUrl ? (
+                      <a href={(viewLog as any).maintenanceBillUrl} target="_blank" rel="noopener" className="text-xs text-blue-600 hover:underline">View Bill</a>
+                    ) : (
+                      <span className="text-xs text-slate-400">Not uploaded</span>
+                    )}
+                  </div>
+                  <div className="border rounded-lg p-2 text-center">
+                    <p className="text-xs text-slate-500 mb-1">Tax Receipt</p>
+                    {(viewLog as any).taxReceiptUrl ? (
+                      <a href={(viewLog as any).taxReceiptUrl} target="_blank" rel="noopener" className="text-xs text-blue-600 hover:underline">View Receipt</a>
+                    ) : (
+                      <span className="text-xs text-slate-400">Not uploaded</span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>

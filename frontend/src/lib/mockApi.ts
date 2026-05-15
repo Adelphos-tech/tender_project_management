@@ -262,5 +262,119 @@ export const mockRoles = {
   },
 };
 
+export const mockTripInquiries = {
+  getAll: async () => {
+    return [
+      { _id: '1', pickupLocation: 'Mumbai Airport', dropLocation: 'Andheri West', dateTime: '2024-01-20T10:00:00Z', notes: 'Urgent booking', status: 'pending', createdBy: { name: 'John Doe' } },
+      { _id: '2', pickupLocation: 'Pune Station', dropLocation: 'Hinjewadi', dateTime: '2024-01-21T14:00:00Z', notes: 'Corporate client', status: 'approved', createdBy: { name: 'Jane Smith' } },
+      { _id: '3', pickupLocation: 'Thane', dropLocation: 'Navi Mumbai', dateTime: '2024-01-22T09:30:00Z', notes: '', status: 'rejected', rejectionReason: 'No vehicles available', createdBy: { name: 'Mike Johnson' } },
+    ];
+  },
+
+  getAvailableVehicles: async () => {
+    return [
+      { _id: '1', model: 'Toyota Innova', type: 'SUV', vehicleNumber: 'MH01 AB 1234' },
+      { _id: '2', model: 'Honda City', type: 'Sedan', vehicleNumber: 'MH02 CD 5678' },
+      { _id: '3', model: 'Maruti Swift', type: 'Hatchback', vehicleNumber: 'MH03 EF 9012' },
+    ];
+  },
+
+  getAvailableDrivers: async () => {
+    return [
+      { _id: '1', name: 'Ramesh Kumar', phone: '+91 98765 11111' },
+      { _id: '2', name: 'Suresh Patil', phone: '+91 98765 22222' },
+      { _id: '3', name: 'Mahesh Singh', phone: '+91 98765 33333' },
+    ];
+  },
+};
+
+export const mockExpenses = {
+  getAll: async () => {
+    return [
+      { _id: '1', type: 'fuel', amount: 2500, description: 'Petrol for trip to Pune', date: '2024-01-15', addedBy: { name: 'Ramesh Kumar' } },
+      { _id: '2', type: 'toll', amount: 450, description: 'Mumbai-Pune Expressway', date: '2024-01-15', addedBy: { name: 'Ramesh Kumar' } },
+      { _id: '3', type: 'maintenance', amount: 15000, description: 'Regular service', date: '2024-01-10', addedBy: { name: 'Admin User' } },
+      { _id: '4', type: 'food', amount: 800, description: 'Driver meals', date: '2024-01-14', addedBy: { name: 'Suresh Patil' } },
+      { _id: '5', type: 'parking', amount: 200, description: 'Airport parking', date: '2024-01-13', addedBy: { name: 'Ramesh Kumar' } },
+    ];
+  },
+};
+
+export const mockReports = {
+  getSummary: async () => {
+    return {
+      totalTrips: 45,
+      totalDistance: 8500,
+      totalExpense: 125000,
+      avgCostPerKM: 14.7,
+    };
+  },
+
+  getDetailed: async () => {
+    return {
+      trips: [
+        { _id: '1', vehicle: { vehicleNumber: 'MH01 AB 1234', model: 'Toyota Innova' }, driver: { name: 'Ramesh Kumar' }, inquiry: { pickupLocation: 'Mumbai', dropLocation: 'Pune' }, totalDistance: 150, totalExpense: 3200, costPerKM: 21.3, completedAt: '2024-01-15T10:00:00Z' },
+        { _id: '2', vehicle: { vehicleNumber: 'MH02 CD 5678', model: 'Honda City' }, driver: { name: 'Suresh Patil' }, inquiry: { pickupLocation: 'Pune', dropLocation: 'Mumbai' }, totalDistance: 150, totalExpense: 2800, costPerKM: 18.7, completedAt: '2024-01-14T16:00:00Z' },
+      ],
+      expenseBreakdown: [
+        { _id: 'fuel', total: 85000, count: 25 },
+        { _id: 'maintenance', total: 25000, count: 5 },
+        { _id: 'tolls', total: 10000, count: 15 },
+        { _id: 'food', total: 3000, count: 8 },
+        { _id: 'parking', total: 2000, count: 12 },
+      ],
+      monthlySummary: [
+        { _id: { year: 2024, month: 1 }, trips: 15, distance: 2800, expense: 42000 },
+        { _id: { year: 2024, month: 2 }, trips: 18, distance: 3200, expense: 48000 },
+        { _id: { year: 2024, month: 3 }, trips: 12, distance: 2500, expense: 35000 },
+      ],
+    };
+  },
+};
+
+export const mockRolesExtended = {
+  getRoles: async () => {
+    return [
+      { _id: '1', name: 'Admin', description: 'Full system access', level: 10, isSystem: true, permissions: [
+        { module: 'dashboard', canView: true, canCreate: true, canEdit: true, canDelete: true },
+        { module: 'vehicles', canView: true, canCreate: true, canEdit: true, canDelete: true },
+      ]},
+      { _id: '2', name: 'Manager', description: 'Manager access', level: 7, isSystem: true, permissions: [
+        { module: 'dashboard', canView: true, canCreate: false, canEdit: false, canDelete: false },
+        { module: 'vehicles', canView: true, canCreate: true, canEdit: true, canDelete: false },
+      ]},
+      { _id: '3', name: 'Staff', description: 'Basic staff access', level: 3, isSystem: false, permissions: [
+        { module: 'trips', canView: true, canCreate: true, canEdit: false, canDelete: false },
+      ]},
+    ];
+  },
+
+  getModules: async () => {
+    return [
+      { id: 'dashboard', name: 'Dashboard', description: 'Main dashboard view' },
+      { id: 'vehicles', name: 'Vehicles', description: 'Vehicle management' },
+      { id: 'drivers', name: 'Drivers', description: 'Driver management' },
+      { id: 'trips', name: 'Trips', description: 'Trip management' },
+      { id: 'inquiries', name: 'Inquiries', description: 'Trip inquiries' },
+      { id: 'expenses', name: 'Expenses', description: 'Expense tracking' },
+      { id: 'reports', name: 'Reports', description: 'Reports and analytics' },
+      { id: 'documents', name: 'Documents', description: 'Document management' },
+      { id: 'settings', name: 'Settings', description: 'System settings' },
+    ];
+  },
+};
+
+export const mockUsers = {
+  getAll: async () => {
+    return [
+      { _id: '1', name: 'Admin User', email: 'admin@example.com', role: 'admin', phone: '+91 98765 00000', isActive: true, createdAt: '2024-01-01T00:00:00Z' },
+      { _id: '2', name: 'Manager One', email: 'manager@example.com', role: 'manager', phone: '+91 98765 11111', isActive: true, createdAt: '2024-01-05T00:00:00Z' },
+      { _id: '3', name: 'Staff Member', email: 'staff@example.com', role: 'staff', phone: '+91 98765 22222', isActive: true, createdAt: '2024-01-10T00:00:00Z' },
+      { _id: '4', name: 'Driver One', email: 'driver@example.com', role: 'driver', phone: '+91 98765 33333', isActive: true, createdAt: '2024-01-12T00:00:00Z' },
+      { _id: '5', name: 'Inactive User', email: 'inactive@example.com', role: 'staff', phone: '+91 98765 44444', isActive: false, createdAt: '2024-01-15T00:00:00Z' },
+    ];
+  },
+};
+
 // Helper to simulate network delay
 export const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

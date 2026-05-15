@@ -1,6 +1,19 @@
 const mongoose = require('mongoose');
 
+const warrantySchema = new mongoose.Schema({
+  brand: String,
+  purchaseDate: Date,
+  warrantyMonths: Number,
+  expiryDate: Date,
+  billUrl: String,
+}, { _id: false });
+
 const vehicleSchema = new mongoose.Schema({
+  itemCode: {
+    type: String,
+    unique: true,
+    trim: true,
+  },
   vehicleNumber: {
     type: String,
     required: [true, 'Vehicle number is required'],
@@ -16,7 +29,7 @@ const vehicleSchema = new mongoose.Schema({
   type: {
     type: String,
     required: [true, 'Vehicle type is required'],
-    enum: ['sedan', 'suv', 'hatchback', 'van', 'bus', 'truck', 'other'],
+    enum: ['sedan', 'suv', 'hatchback', 'van', 'bus', 'truck', 'bike', 'scooter', 'other'],
   },
   year: {
     type: Number,
@@ -53,6 +66,26 @@ const vehicleSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  purchasePrice: {
+    type: Number,
+    default: 0,
+  },
+  purchaseDate: {
+    type: Date,
+  },
+  tyreWarranty: warrantySchema,
+  batteryWarranty: warrantySchema,
 }, { timestamps: true });
+
+// Auto-generate itemCode before saving
+vehicleSchema.pre('save', async function(next) {
+  if (!this.itemCode) {
+    const count = await mongoose.model('Vehicle').countDocuments();
+    const typeCode = this.type ? this.type.substring(0, 3).toUpperCase() : 'VEH';
+    const makeCode = this.model ? this.model.substring(0, 3).toUpperCase() : 'UNK';
+    this.itemCode = `VEH/${typeCode}/${makeCode}/${String(count + 1).padStart(3, '0')}`;
+  }
+  next();
+});
 
 module.exports = mongoose.model('Vehicle', vehicleSchema);

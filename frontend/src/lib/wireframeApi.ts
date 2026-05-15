@@ -10,6 +10,11 @@ import {
   mockContractorBills,
   mockDashboard,
   mockRoles,
+  mockTripInquiries,
+  mockExpenses,
+  mockReports,
+  mockRolesExtended,
+  mockUsers,
   delay,
 } from './mockApi';
 
@@ -27,6 +32,7 @@ const wireframeApi = {
 
     // Auth routes
     if (url === '/auth/profile') return createMockResponse(await mockAuth.getProfile());
+    if (url === '/auth/users') return createMockResponse(await mockUsers.getAll());
     if (url === '/roles/my-permissions') return createMockResponse(await mockRoles.getMyPermissions());
 
     // Dashboard
@@ -34,23 +40,36 @@ const wireframeApi = {
 
     // Vehicles
     if (url === '/vehicles') return createMockResponse(await mockVehicles.getAll());
-    if (url.match(/\/vehicles\/.+/)) {
+    if (url === '/vehicles/available') return createMockResponse(await mockTripInquiries.getAvailableVehicles());
+    if (url.match(/\/vehicles\/[^/]+$/) && !url.includes('available')) {
       const id = url.split('/').pop()!;
       return createMockResponse(await mockVehicles.getById(id));
     }
 
     // Drivers
     if (url === '/drivers') return createMockResponse(await mockDrivers.getAll());
+    if (url === '/drivers/available') return createMockResponse(await mockTripInquiries.getAvailableDrivers());
 
     // Trips
     if (url === '/trips') return createMockResponse(await mockTrips.getAll());
-    if (url.match(/\/trips\/.+/)) {
+    if (url.match(/\/trips\/[^/]+$/) && !url.includes('status')) {
       const id = url.split('/').pop()!;
       return createMockResponse(await mockTrips.getById(id));
     }
 
-    // Inquiries
-    if (url === '/trip-inquiries') return createMockResponse(await mockInquiries.getAll());
+    // Trip Inquiries
+    if (url === '/trip-inquiries') return createMockResponse(await mockTripInquiries.getAll());
+
+    // Expenses
+    if (url === '/expenses') return createMockResponse(await mockExpenses.getAll());
+
+    // Reports
+    if (url === '/reports/summary') return createMockResponse(await mockReports.getSummary());
+    if (url === '/reports/detailed') return createMockResponse(await mockReports.getDetailed());
+
+    // Roles
+    if (url === '/roles') return createMockResponse(await mockRolesExtended.getRoles());
+    if (url === '/roles/modules') return createMockResponse(await mockRolesExtended.getModules());
 
     // Documents
     if (url === '/documents') return createMockResponse(await mockDocuments.getAll());
@@ -81,17 +100,56 @@ const wireframeApi = {
 
     if (url === '/auth/login') return createMockResponse(await mockAuth.login(data.email, data.password));
     if (url === '/auth/register') return createMockResponse(await mockAuth.register(data));
+    if (url === '/trip-inquiries') return createMockResponse({ _id: Date.now().toString(), ...data, status: 'pending' });
+    if (url === '/expenses') return createMockResponse({ _id: Date.now().toString(), ...data });
+    if (url === '/roles') return createMockResponse({ _id: Date.now().toString(), ...data });
+    if (url === '/roles/init') return createMockResponse({
+      message: 'System roles initialized',
+      results: [
+        { name: 'Admin', status: 'created' },
+        { name: 'Manager', status: 'created' },
+        { name: 'Staff', status: 'created' },
+        { name: 'Driver', status: 'created' },
+      ]
+    });
 
     return createMockResponse({ message: 'Success' });
   },
 
-  put: async () => {
+  put: async (url: string, data?: any) => {
     await delay(300);
+
+    // Trip inquiry status updates
+    if (url.match(/\/trip-inquiries\/.+\/status/)) {
+      return createMockResponse({ message: 'Status updated', status: data?.status });
+    }
+
+    // User updates
+    if (url.match(/\/auth\/users\/.+/)) {
+      return createMockResponse({ message: 'User updated', ...data });
+    }
+
+    // Role updates
+    if (url.match(/\/roles\/.+/)) {
+      return createMockResponse({ message: 'Role updated', ...data });
+    }
+
     return createMockResponse({ message: 'Updated' });
   },
 
-  delete: async () => {
+  delete: async (url: string) => {
     await delay(300);
+
+    // Expense deletion
+    if (url.match(/\/expenses\/.+/)) {
+      return createMockResponse({ message: 'Expense deleted' });
+    }
+
+    // Role deletion
+    if (url.match(/\/roles\/.+/)) {
+      return createMockResponse({ message: 'Role deleted' });
+    }
+
     return createMockResponse({ message: 'Deleted' });
   },
 };

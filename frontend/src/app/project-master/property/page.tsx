@@ -28,11 +28,11 @@ const propertyStats = [
 ];
 
 const mockProperties = [
-  { id: 'PROP-001', itemCode: 'ELE/AC/LG/001', name: 'Air Conditioner', category: 'Electronics', make: 'LG', model: '1.5 Ton 5 Star', yearOfPurchase: '2022', qty: 3, securityCode: 'ELE/AC/LG/1', warrantyTill: '2025-03-01', assignedTo: 'Mumbai HQ', responsiblePerson: 'Ketan Makadiya', status: 'active' },
-  { id: 'PROP-002', itemCode: 'ELE/FAN/USH/002', name: 'Ceiling Fan', category: 'Electronics', make: 'Usha', model: 'Orient Aerostorm', yearOfPurchase: '2021', qty: 8, securityCode: 'ELE/FAN/USH/2', warrantyTill: '2023-06-01', assignedTo: 'Delhi Branch', responsiblePerson: 'Devang Lakhani', status: 'expired' },
-  { id: 'PROP-003', itemCode: 'COMP/LAP/DEL/003', name: 'Laptop', category: 'Computer', make: 'Dell', model: 'Inspiron 15', yearOfPurchase: '2023', qty: 5, securityCode: 'COMP/LAP/DEL/3', warrantyTill: '2026-01-01', assignedTo: 'Mumbai HQ', responsiblePerson: 'Nikhil Davda', status: 'active' },
-  { id: 'PROP-004', itemCode: 'FURN/CHR/HON/004', name: 'Office Chair', category: 'Furniture', make: 'Honeywell', model: 'Executive Series', yearOfPurchase: '2020', qty: 12, securityCode: 'FURN/CHR/HON/4', warrantyTill: '2023-12-01', assignedTo: 'Rajkot Branch', responsiblePerson: 'Ketan Makadiya', status: 'expired' },
-  { id: 'PROP-005', itemCode: 'ELE/PROJ/EPS/005', name: 'Projector', category: 'Electronics', make: 'Epson', model: 'EB-X41', yearOfPurchase: '2023', qty: 2, securityCode: 'ELE/PROJ/EPS/5', warrantyTill: '2026-07-01', assignedTo: 'Conference Room', responsiblePerson: 'Devang Lakhani', status: 'active' },
+  { id: 'PROP-001', itemCode: 'ELE/AC/LG/001', securityCode: 'ELE/AC/LG/101', name: 'Air Conditioner', category: 'Electronics', make: 'LG', model: '1.5 Ton 5 Star', yearOfPurchase: '2022', qty: 3, warrantyTill: '2025-03-01', assignedTo: 'Mumbai HQ', responsiblePerson: 'Ketan Makadiya', status: 'active' },
+  { id: 'PROP-002', itemCode: 'ELE/FAN/USH/002', securityCode: 'ELE/FAN/USH/102', name: 'Ceiling Fan', category: 'Electronics', make: 'Usha', model: 'Orient Aerostorm', yearOfPurchase: '2021', qty: 8, warrantyTill: '2023-06-01', assignedTo: 'Delhi Branch', responsiblePerson: 'Devang Lakhani', status: 'expired' },
+  { id: 'PROP-003', itemCode: 'COMP/LAP/DEL/003', securityCode: 'COMP/LAP/DEL/103', name: 'Laptop', category: 'Computer', make: 'Dell', model: 'Inspiron 15', yearOfPurchase: '2023', qty: 5, warrantyTill: '2026-01-01', assignedTo: 'Mumbai HQ', responsiblePerson: 'Nikhil Davda', status: 'active' },
+  { id: 'PROP-004', itemCode: 'FURN/CHR/HON/004', securityCode: 'FURN/CHR/HON/104', name: 'Office Chair', category: 'Furniture', make: 'Honeywell', model: 'Executive Series', yearOfPurchase: '2020', qty: 12, warrantyTill: '2023-12-01', assignedTo: 'Rajkot Branch', responsiblePerson: 'Ketan Makadiya', status: 'expired' },
+  { id: 'PROP-005', itemCode: 'ELE/PROJ/EPS/005', securityCode: 'ELE/PROJ/EPS/105', name: 'Projector', category: 'Electronics', make: 'Epson', model: 'EB-X41', yearOfPurchase: '2023', qty: 2, warrantyTill: '2026-07-01', assignedTo: 'Conference Room', responsiblePerson: 'Devang Lakhani', status: 'active' },
 ];
 
 const categories = ['All', 'Electronics', 'Computer', 'Furniture', 'Vehicle', 'Consumable', 'Other'];
